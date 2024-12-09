@@ -11,17 +11,22 @@ export type QueryPhotosProps = QueryFunctionContext<ReturnType<typeof photosKeys
 export const searchQueryPhotos = async ({ queryKey }:QueryPhotosProps) => {
     const [_key, query] = queryKey
     //onsole.log("query",  query)
+    let delay = 1000
+    const res = new Promise(resolve => setTimeout(resolve, delay))
+        .then(async() => {
+        const response = await fetch('https://a6538fe10a824d75a98a5889e00d9288.api.mockbin.io/', {})
+        // const response = await fetch(
+        //     process.env.UNSPLASH_BASE_API + `search/photos?query=${query}`, {
+        //         headers:ApiHeader()
+        //     })
 
-    const response = await fetch('https://a6538fe10a824d75a98a5889e00d9288.api.mockbin.io/')
-    // const response = await fetch(
-    //     process.env.UNSPLASH_BASE_API + `search/photos?query=${query}`, {
-    //         headers:ApiHeader()
-    //     })
+        if (!response.ok) {
+            throw new Error('Network response was not ok')
+        }
 
-    if (!response.ok) {
-        throw new Error('Network response was not ok')
-    }
+        return fakeData
+      })
 
-    return fakeData
+      return res
     // return response.json()
 }

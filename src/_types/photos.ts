@@ -28,9 +28,7 @@ export enum EOrientationProps {
   squarish = "Squarish"
 }
 
-
 export type OrderByObject = Record<keyof typeof EOrderByProps, string> 
-// const d = Object.entries(OrderByProps).map((e,v)=> console.log(e))
 
 export type SearchPhotosBaseParams = {
   query:string
@@ -55,4 +53,62 @@ export const photosKeys = {
     color?: keyof typeof EColorProps,
     orientation?: keyof typeof EOrientationProps
   ) => [...photosKeys.all, query, page, per_page, order_by, content_filter, color, orientation] as const,
+}
+
+export type PhotoUrlTypes = {
+  raw:string
+  full:string
+  regular:string 
+  small:string
+  small_s3:string
+  thumb:string
+}
+
+export type PhotoLinksTypes = {
+  self:string
+  html:string 
+  download:string 
+  download_location:string
+}
+
+export type PhotoUserProps = {
+  id:string
+  name:string 
+  first_name:string 
+  last_name:string
+  portfolio_url:string 
+  bio:string 
+  location:string
+  profile_image:{
+    small:string
+    medium:string
+  }
+}
+
+export type PhotoResult = {
+  id:string
+  slug:string
+  created_at:string
+  updated_at:string 
+  promoted_at:string 
+  width: number
+  height: number
+  color: string 
+  blur_hash: string 
+  description: string 
+  alt_description: string
+  urls:PhotoUrlTypes
+  links:PhotoLinksTypes
+  likes:number
+  liked_by_user:boolean
+  sponsorship:null | string
+  asset_type:string
+  topic_submissions: null | object
+  user:PhotoUserProps
+}
+
+export type SearchPhotosProps = {
+  total:number 
+  total_pages: number
+  results: PhotoResult[]
 }
