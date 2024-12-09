@@ -32,7 +32,7 @@ export default function SearchBar() {
                 </Button>
             
             </div>
-            <PhotoGrid keyword={search} />
+            {search.length > 2 ? <PhotoGrid keyword={search} /> : <p>No data provided</p>}
         </div>
     )
 }
