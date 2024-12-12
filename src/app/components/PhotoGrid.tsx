@@ -1,16 +1,20 @@
 'use client'
 
-import { useQuery } from "@tanstack/react-query"
-import { photosKeys } from "@/_types/photos"
+import { useQuery, keepPreviousData } from "@tanstack/react-query"
+import { EColorProps, EOrientationProps, photosKeys } from "@/_types/photos"
 import { useEffect, useState, memo, useMemo } from "react"
 import { searchQueryPhotos } from "@/apis"
 import { SearchPhotosParams } from "@/_types/photos"
 import useDebounce from "@/lib/useDebounce";
+import { useScrollEndEvent } from "@/lib/useScrollEvent";
 import { chunk } from "lodash"
 import PhotoGridLoader from "@/components/PhotoGridLoader"
 import { PhotoResult } from "@/_types/photos"
 import PhotoGridItem, { PhotoDetailDrawer } from "./PhotoGridItem"
-
+import { useSearchOptionStore } from "@/states"
+import { useShallow } from "zustand/shallow"
+import { Badge } from "@/components/ui/badge"
+import {useTranslations, useFormatter} from 'next-intl';
 
 type PhotoGridProps = {
     keyword:string
@@ -24,19 +28,27 @@ type PhotoGridMemoizedProps =  {
 }
 
 export default function PhotoGrid({keyword}:PhotoGridProps) {
+    const t = useTranslations("Home")
+    const format = useFormatter();
+    const [moreData, setMoreData] = useState<boolean>(false)
     const resultQuery = useDebounce(keyword, 500)
+    const pagenumber = useScrollEndEvent()
     const params:SearchPhotosParams = {
         query: resultQuery,
-        page: 1,
+        page: pagenumber,
         per_page:18
     }
     const { query, page, per_page } = params
-
     const { data, isFetching, refetch, isSuccess, isFetched} = useQuery({
       queryKey: photosKeys.search(query, page, per_page),
       queryFn: searchQueryPhotos,
       enabled: false,
+      placeholderData: keepPreviousData,
     })
+    
+    const {color, orientation} = useSearchOptionStore(
+        useShallow((state) => ({ color: state.color, orientation: state.orientation }))
+    )
 
     useEffect(()=>{
         const timer = setTimeout(() => {
@@ -48,18 +60,46 @@ export default function PhotoGrid({keyword}:PhotoGridProps) {
         }
     },[resultQuery])
 
+    useEffect(()=>{
+        async function loadmoredata(){
+            setMoreData(true)
+            refetch()
+        }
+        if( !moreData && !isFetching ) {
+            loadmoredata()
+        }
+    },[page])
+
+    useEffect(()=>{
+        if( moreData && isFetched ) {
+            setMoreData(false)
+        }
+    },[moreData, isFetched])
+
     const newFormData = useMemo(()=>{
         return chunk(data?.results, 3)
     },[data, resultQuery, isFetching])
 
-    return <PhotoGridMemoized 
-        isFetching={isFetching} 
-        isFetched={isFetched} 
-        isSuccess={isSuccess} 
-        rows={newFormData as PhotoResult[][]} />
+    console.log("pagenumber", pagenumber)
+
+    return <>
+        {keyword && <div className="flex items-center my-4 text-gray-500 text-sm">
+            <div>Result: <Badge variant={"secondary"}>
+                {format.number(data?.total??0)}</Badge></div>
+            {color && <div className="ml-2">
+                <Badge variant={"default"}>{EColorProps[color]}</Badge></div>}
+            {orientation && <div className="ml-2">
+                <Badge variant={"default"}>{EOrientationProps[orientation]}</Badge>      
+            </div>}
+        </div>}
+        <PhotoGridMemoized 
+            isFetching={isFetching} 
+            isFetched={isFetched} 
+            isSuccess={isSuccess} 
+            rows={newFormData as PhotoResult[][]} />
+    </>
     
 }
-
 
 function arePropsEqual(
     oldProps:PhotoGridMemoizedProps,
@@ -78,12 +118,10 @@ const PhotoGridMemoized = memo(function PhotoGridResult(
    ) {
     const [drawerState, setDrawerState] = useState<PhotoResult | null>(null)
     const onCloseDrawer = () => {
-        console.log("item", false)
        setDrawerState(null)
     }
 
     const onOpenDrawer = (item:PhotoResult) => {
-        console.log("item", item)
         setDrawerState(item)
      }
 
