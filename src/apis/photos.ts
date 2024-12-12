@@ -9,8 +9,8 @@ import { photosKeys } from "@/_types/photos"
 export type QueryPhotosProps = QueryFunctionContext<ReturnType<typeof photosKeys["search"]>>
 
 export const searchQueryPhotos = async ({ queryKey }:QueryPhotosProps) => {
-    const [_key, query] = queryKey
-    //onsole.log("query",  query)
+    const [_key, query, page] = queryKey
+    console.log("query",  query, page)
     let delay = 1000
     const res = new Promise(resolve => setTimeout(resolve, delay))
         .then(async() => {

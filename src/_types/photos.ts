@@ -1,3 +1,5 @@
+import { ValueOf } from "next/dist/shared/lib/constants"
+
 export enum EOrderByProps {
   relevant = "Relevance",
   latest = "Latest",
@@ -27,8 +29,6 @@ export enum EOrientationProps {
   portrait = "Portrait",
   squarish = "Squarish"
 }
-
-export type OrderByObject = Record<keyof typeof EOrderByProps, string> 
 
 export type SearchPhotosBaseParams = {
   query:string
@@ -97,7 +97,7 @@ export type PhotoResult = {
   blur_hash: string 
   description: string 
   alt_description: string
-  urls:PhotoUrlTypes
+  urls:Partial<PhotoUrlTypes>
   links:PhotoLinksTypes
   likes:number
   liked_by_user:boolean
