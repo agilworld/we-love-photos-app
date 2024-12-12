@@ -1,12 +1,16 @@
 import { PhotoResult } from "@/_types/photos";
-import { atom } from "recoil";
+import { create } from 'zustand'
+import { EColorProps, EOrientationProps } from "@/_types/photos"
 
-export const searchQueryState = atom({
-    key: 'searchquery', // unique ID (with respect to other atoms/selectors)
-    default: '', // default value (aka initial value)
-});
-
-export const photoDrawerState = atom<PhotoResult | null>({
-    key: 'photodrawer',
-    default:null // unique ID (with respect to other atoms/selectors)
-});
+type SettingOptionProps = {
+    color?:keyof typeof EColorProps
+    orientation?: keyof typeof EOrientationProps
+    setColor:(val:string)=>void
+    setOrientation:(val:string)=>void
+}
+export const useSearchOptionStore = create<SettingOptionProps>((set) => ({
+    color: undefined,
+    orientation: undefined,
+    setColor:(value:string)=>set((state) => ({color:value as keyof typeof EColorProps})),
+    setOrientation:(value:string)=>set((state) => ({orientation:value as keyof typeof EOrientationProps})),
+}))
