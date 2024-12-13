@@ -22,10 +22,10 @@ type PhotoGridItemProps = {
 
 export default function PhotoGridItem({item, ...rest} : PhotoGridItemProps) {
     return (
-        <div key={item.id} className="shadow-lg cursor-pointer" {...rest} >
+        <div key={item.id} className="cursor-pointer" {...rest} >
             <img 
                 className="h-auto max-w-full rounded-lg shadow-lg hover:scale-105 duration-200 delay-75	ease-in-out" 
-                src={item.urls?.regular} />  
+                src={item.urls?.small} />  
                      
         </div>
     )
@@ -65,8 +65,9 @@ export const PhotoDetailDrawer = ({item, onCloseDrawer}:PhotoDrawerProps) => {
                                 </DrawerDescription>
                                 <div className="flex items-center my-6">
                                     <Avatar className="mr-3">
-                                        <AvatarImage src={item.user.profile_image.medium} />
-                                        <AvatarFallback>CN</AvatarFallback>
+                                        <AvatarImage 
+                                            src={item.user.profile_image.medium} />
+                                        <AvatarFallback>{item.user.first_name.charAt(0)}{item.user.last_name.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                     <div className="text-xs">
                                         <h4 className="font-regular">
@@ -78,7 +79,7 @@ export const PhotoDetailDrawer = ({item, onCloseDrawer}:PhotoDrawerProps) => {
                                 </div>
                             </DrawerHeader>
                             <DrawerFooter className="pt-2">
-                                <Button onClick={downloadPhoto}>Download</Button>
+                                <Button onClick={downloadPhoto}>View</Button>
                                 <DrawerClose asChild>
                                     <Button variant="outline">Cancel</Button>
                                 </DrawerClose>
