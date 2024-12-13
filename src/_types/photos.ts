@@ -89,7 +89,7 @@ export type PhotoResult = {
   id:string
   slug:string
   created_at:string
-  updated_at:string 
+  updated_at:string
   promoted_at:string 
   width: number
   height: number
