@@ -1,13 +1,11 @@
 'use client'
 
-import { useQuery, useInfiniteQuery, keepPreviousData } from "@tanstack/react-query"
+import { useQuery} from "@tanstack/react-query"
 import { EColorProps, EOrientationProps, photosKeys } from "@/_types/photos"
-import { useEffect, useState, memo, useMemo, useRef, useCallback, use } from "react"
+import { useEffect, useState, memo, useMemo, useRef, useCallback } from "react"
 import { searchQueryPhotos } from "@/apis"
 import { SearchPhotosParams } from "@/_types/photos"
 import useDebounce from "@/lib/useDebounce";
-import { useScrollEndEvent } from "@/lib/useScrollEvent";
-import { chunk } from "lodash"
 import PhotoGridLoader from "@/components/PhotoGridLoader"
 import { PhotoResult } from "@/_types/photos"
 import PhotoGridItem, { PhotoDetailDrawer } from "./PhotoGridItem"
@@ -15,9 +13,10 @@ import { usePhotoStore, useSearchOptionStore } from "@/states"
 import { useShallow } from "zustand/shallow"
 import { Badge } from "@/components/ui/badge"
 import { useTranslations, useFormatter} from 'next-intl';
-import { chunk3dAdvanceByHeight, chunks2Arr, uniqueBy } from "@/lib/utils"
+import { chunk3dAdvanceByHeight, uniqueBy } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import MoveTopButton from "@/components/MoveTop"
 
 type PhotoGridProps = {
     keyword:string
@@ -86,7 +85,7 @@ export default function PhotoGrid({keyword}:PhotoGridProps) {
         }
         const timer = setTimeout(() => {
             refetch()
-        }, 500);
+        }, 1000);
 
         return () =>{
             clearTimeout(timer)
@@ -126,9 +125,9 @@ export default function PhotoGrid({keyword}:PhotoGridProps) {
         {keyword && <div className="flex items-center justify-between 
         my-4 text-gray-500 text-sm">
             <div className="flex items-center">
-                <div>Result: {isFetched && data?.total ? 
+                <div>Found:{isFetched && data?.total ? 
                     <Badge variant={"secondary"}>
-                        {format.number(data?.total??0)}
+                        {photoStore.current?.length} of {format.number(data?.total??0)}
                     </Badge> : data?.total === 0 ? null :
                         <Skeleton className="w-12 inline-flex h-[10px] rounded-lg" />}
                 </div>
@@ -161,6 +160,8 @@ export default function PhotoGrid({keyword}:PhotoGridProps) {
             items-center justify-center my-6 mt-12">
             <Button size={"lg"} variant={"default"} onClick={()=>handleNextPage()}>Load more</Button>
         </div>}
+
+       {photoStore.current?.length > 6 && <MoveTopButton />}
         
     </>
     

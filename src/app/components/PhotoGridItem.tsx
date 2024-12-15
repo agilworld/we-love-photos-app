@@ -6,7 +6,6 @@ import Image, { ImageLoader, ImageLoaderProps } from "next/image";
 import type { ComponentPropsWithRef } from "react";
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
     DrawerFooter,
