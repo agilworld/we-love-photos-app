@@ -18,6 +18,9 @@ export default {
 		animation: {
 			pingpong: 'pingpong 120s ease-in-out infinite',
 		},
+		maxHeight: {
+			'drawer': 'calc(100vh-5%)',
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
