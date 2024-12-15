@@ -1,5 +1,6 @@
 'use client'
 
+import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import PhotoGrid from "./components/PhotoGrid";
 import SearchBar from "./components/SearchBar";
@@ -9,6 +10,7 @@ export default function Home() {
         <div className="py-10">
           <Hero />
           <SearchBar />
+          <Footer />
         </div>
     </div>
   );
