@@ -20,7 +20,7 @@ export default function SearchBar() {
     },[setSearch, search])
 
     return (
-        <div>
+        <div className="flex flex-col">
             <div className="flex w-full items-center space-x-2">
                 <div className="relative w-full">
                     <div className="absolute mr-2 inset-y-0 start-0 
@@ -30,7 +30,7 @@ export default function SearchBar() {
                     <Input onChange={handleSearch} type="text" 
                         placeholder="Type keyword here e.g. tiger, laptop with desk" 
                         className="w-full md:text-xl text-xl shadow-lg 
-                            h-16 px-8 pl-16 py-4" />
+                            h-16 px-8 pl-16 pr-20 py-4" />
                     <SettingsOption />
                 </div>
             </div>

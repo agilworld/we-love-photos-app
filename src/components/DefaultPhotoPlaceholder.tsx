@@ -4,7 +4,7 @@ import { Rows } from "@/const/placeholder"
 
 export default function DefaultPhotoPlaceholder() {
     return (
-        <div />
+        <div className="my-12" />
     )
 }
 
