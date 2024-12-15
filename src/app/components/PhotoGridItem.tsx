@@ -62,7 +62,33 @@ export const PhotoDetailDrawer = ({item, onCloseDrawer}:PhotoDrawerProps) => {
     }
 
     const downloadPhoto = () => {
-        window.open(item.urls.full, "_blank")
+        //window.open(item.urls.full, "_blank")
+        if( item.urls?.full ) {
+            const url = item.urls?.full as string
+            fetch(url)
+                .then((response)=>{
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.blob();
+                })
+                .then((response)=>{
+                    const element = document.createElement("a");
+                    const urlRes = URL.createObjectURL(response)
+                    element.href = urlRes;
+                    element.setAttribute(
+                        'download', 
+                        `welovephoto-${item.slug}.jpg`);
+                    document.body.appendChild(element);
+                    element.click();
+                    document.body.removeChild(element);
+                    URL.revokeObjectURL(urlRes);
+                })
+                .catch((error) => {
+                    console.error('Error downloading the image:', error);
+                });
+        }
+        
     }
 
     const initialName = () => {
@@ -71,8 +97,8 @@ export const PhotoDetailDrawer = ({item, onCloseDrawer}:PhotoDrawerProps) => {
             f = item.user.first_name.charAt(0)
             l = item.user.last_name.charAt(0)
         } else {
-            f = item.user.name.charAt(0)
-            l = item.user.name.charAt(1)
+            f = item.user.name?.charAt(0)??'U'
+            l = item.user.name?.charAt(1)??'n'
         }
         return `${f}${l}`
     }
@@ -121,16 +147,17 @@ export const PhotoDetailDrawer = ({item, onCloseDrawer}:PhotoDrawerProps) => {
                                     </Avatar>
                                     <div className="text-xs">
                                         <h4 className="font-regular">
-                                            {item.user.name} </h4>
+                                            Photo by <span className="underline">{item.user.name}</span> on <span>Unsplash</span> </h4>
                                         <div>
-                                            {item.user.portfolio_url && <a className="text-blue-600 visited:text-purple-600" href={item.user.portfolio_url} target="_blank">View Profile</a>}
+                                            {item.user.links.html && <a className="text-blue-600 visited:text-purple-600" 
+                                            href={item.user.links.html} target="_blank">View Profile</a>}
                                         </div>
                                     </div>
                                 </div>
                             </DrawerHeader>
                             <DrawerFooter className="mt-10 pt-2">
-                                <Button onClick={downloadPhoto}>View</Button>
-                                <Button onClick={handleClose} variant="outline">Cancel</Button>
+                                <Button onClick={downloadPhoto}>Download</Button>
+                                <Button onClick={handleClose} variant="outline">Close</Button>
                             </DrawerFooter>
                         </div>
                     </div>

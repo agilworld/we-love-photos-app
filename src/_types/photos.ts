@@ -79,9 +79,16 @@ export type PhotoUserProps = {
   portfolio_url:string 
   bio:string 
   location:string
-  profile_image:{
+  profile_image: {
     small:string
     medium:string
+  },
+  links:{
+    self:string,
+    html:string,
+    photos: string,
+    likes:string,
+    portfolio:string
   }
 }
 
