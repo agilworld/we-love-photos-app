@@ -13,10 +13,10 @@ export const searchQueryPhotos = async ({ queryKey }:QueryPhotosProps):Promise<S
     let delay = 1000
     let urlApi = process.env.NEXT_PUBLIC_UNSPLASH_BASE_API + `search/photos?query=${query}&page=${page}&per_page=${per_page}`
     if( color ) {
-        urlApi +=`color=${color}`
+        urlApi +=`&color=${color}`
     }
     if( orientation ){
-        urlApi +=`orintation=${orientation}`
+        urlApi +=`&orientation=${orientation}`
     }
     // const res = new Promise(resolve => setTimeout(resolve, delay))
     //     .then(async() => {

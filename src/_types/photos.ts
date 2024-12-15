@@ -48,11 +48,11 @@ export const photosKeys = {
     query?:string, 
     page?:number, 
     per_page?:number, 
-    order_by?:keyof typeof EOrderByProps,
-    content_filter?: keyof typeof EContentFilterProps,
     color?: keyof typeof EColorProps,
-    orientation?: keyof typeof EOrientationProps
-  ) => [...photosKeys.all, query, page, per_page, order_by, content_filter, color, orientation] as const,
+    orientation?: keyof typeof EOrientationProps,
+    order_by?:keyof typeof EOrderByProps,
+    content_filter?: keyof typeof EContentFilterProps
+  ) => [...photosKeys.all, query, page, per_page, color, orientation, order_by, content_filter] as const,
 }
 
 export type PhotoUrlTypes = {

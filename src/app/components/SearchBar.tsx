@@ -59,16 +59,19 @@ const SettingsOption = () => {
     const setColor = useSearchOptionStore((state)=> state.setColor)
 
     const handleOrientationChange = (e:ChangeEvent<HTMLSelectElement>) => {
-        setOrientation(e?.target?.value)
+        const val = e?.target?.value !== "Default" ?  e?.target?.value : undefined
+        setOrientation(val)
     }
 
     const handleColorChange = (e:ChangeEvent<HTMLSelectElement>) => {
-        setColor(e.target.value)
+        const val = e?.target?.value !== "Default" ?  e?.target?.value : undefined
+        setColor(val)
     }
 
     return (
         <div onMouseLeave={handleMouseLeave} className="absolute mr-4 inset-y-0 end-0 flex items-center ps-3.5">
-            <Button ref={buttonRef} id="dropdownDefaultButton" onClick={handleDropdown} 
+            <Button ref={buttonRef} id="dropdownDefaultButton" 
+                onClick={handleDropdown} 
                 data-dropdown-toggle="dropdown" 
                 className="
                     text-white bg-black hover:bg-gray-800 
