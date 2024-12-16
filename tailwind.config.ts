@@ -9,6 +9,18 @@ export default {
   ],
   theme: {
   	extend: {
+		keyframes: {
+			pingpong: {
+			  '0%, 100%': { transform: 'translateX(-50%)' },
+			  '50%': { transform: 'translateX(75%)' },
+			}
+		},
+		animation: {
+			pingpong: 'pingpong 120s ease-in-out infinite',
+		},
+		maxHeight: {
+			'drawer': 'calc(100vh-5%)',
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
