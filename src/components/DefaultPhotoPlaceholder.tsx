@@ -1,11 +1,5 @@
-
-import PhotoGridItem from "@/app/components/PhotoGridItem"
-import { Rows } from "@/const/placeholder"
-
 export default function DefaultPhotoPlaceholder() {
-    return (
-        <div className="my-12" />
-    )
+  return <div className="my-12" />;
 }
 
 /**

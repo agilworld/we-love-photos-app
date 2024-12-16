@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import {getLocale, getMessages} from 'next-intl/server';
+import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 import Providers from "./providers";
 
@@ -18,8 +18,9 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "We Love Photo | Open Source Project",
-  description: "Dedication for who those love and search photos for collection or commercial project ",
-  keywords:"photos, sharing photo, free photos, download photo, search photo"
+  description:
+    "Dedication for who those love and search photos for collection or commercial project ",
+  keywords: "photos, sharing photo, free photos, download photo, search photo",
 };
 
 export default async function RootLayout({
@@ -34,9 +35,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-          <Providers locale={locale} messages={messages}>
-            {children}
-          </Providers>
+        <Providers locale={locale} messages={messages}>
+          {children}
+        </Providers>
       </body>
     </html>
   );
