@@ -18,10 +18,11 @@ import { usePhotoStore, useSearchOptionStore } from "@/states";
 import { useShallow } from "zustand/shallow";
 import { Badge } from "@/components/ui/badge";
 import { useFormatter } from "next-intl";
-import { chunk3dAdvanceByHeight, uniqueBy } from "@/lib/utils";
+import { chunk3dAdvanceByHeight, chunks2Arr, uniqueBy } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoveTopButton from "@/components/MoveTop";
+import { isScreen } from "@/lib/media";
 
 type PhotoGridProps = {
   keyword: string;
@@ -50,7 +51,6 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
       orientation: state.orientation,
     })),
   );
-  //const pagenumber = useScrollEndEvent()
   const params: SearchPhotosParams = {
     query: resultQuery,
     page: pagenumber,
@@ -113,6 +113,8 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
     let newPhotos = photoStore.current;
     if (newPhotos.length === 0) return [];
     newPhotos = uniqueBy(newPhotos, (v: any) => v.id) as PhotoResult[];
+
+    if (isScreen("md")) return chunks2Arr(newPhotos, 1);
     return chunk3dAdvanceByHeight(newPhotos);
   }, [photoStore.current, resultQuery]);
 
@@ -120,9 +122,6 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
     setMoreData(true);
     setPagenumber((prev) => prev + 1);
   }, [moreData, setMoreData, setPagenumber]);
-
-  console.log("newFormData", newFormData);
-  console.log("data", data);
 
   return (
     <>
@@ -233,7 +232,7 @@ const PhotoGridMemoized = memo(function PhotoGridResult({
       {!isFetched && !isMoredata ? (
         <PhotoGridLoader />
       ) : rows.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {rows.map((items, chunkIdx) => (
             <div key={chunkIdx} className="flex flex-col gap-5">
               {items.map((item, idx) => (
