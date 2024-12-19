@@ -125,9 +125,9 @@ export const PhotoDetailDrawer = ({
   return (
     <Drawer open={open} onClose={handleClose} onOpenChange={handleClose}>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-4xl py-6">
-          <div className="flex justify-center">
-            <div className="w-4/6">
+        <div className="mx-auto w-full max-w-4xl md:py-6">
+          <div className="flex flex-col md:flex-row justify-center">
+            <div className="w-full md:w-4/6">
               {item.urls?.regular && isClient && (
                 <Image
                   src={item.urls?.regular}
@@ -144,8 +144,8 @@ export const PhotoDetailDrawer = ({
                 />
               )}
             </div>
-            <div className="w-2/6">
-              <DrawerHeader className="text-left pt-0 pl-10">
+            <div className="w-full md:w-2/6">
+              <DrawerHeader className="text-left pt-10 pr-10 pl-10 md:pt-0 md:pl-10 md:pr-2">
                 <DrawerTitle className="leading-tight">{desc()}</DrawerTitle>
                 <DrawerDescription className="leading-none text-md">
                   {altDesc()}
