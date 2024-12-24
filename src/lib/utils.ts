@@ -63,3 +63,22 @@ export const chunk3dAdvanceByHeight = (arr: PhotoResult[]) => {
 
   return newArr;
 };
+
+const keys = (x: any) =>
+  Object.getOwnPropertyNames(x).concat(
+    Object.getOwnPropertyNames(x?.__proto__),
+  );
+
+const isObject = (v: any) =>
+  Object.prototype.toString.call(v) === "[object Object]";
+
+export const classToObject = (clss: any) =>
+  keys(clss ?? {}).reduce((object: any, key) => {
+    const [val, arr, obj] = [
+      clss[key],
+      Array.isArray(clss[key]),
+      isObject(clss[key]),
+    ];
+    object[key] = arr ? val.map(classToObject) : obj ? classToObject(val) : val;
+    return object;
+  }, {});
