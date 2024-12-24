@@ -5,10 +5,7 @@ import {
   photosKeys,
   UnsplashSearchPhotosProps,
 } from "@/_types/photos";
-import {
-  PhotoRepositoryList,
-  PhotoRepositoryPexel,
-} from "@/lib/photoRepository";
+import { PhotoRepositoryList } from "@/lib/photoRepository";
 export type QueryPhotosProps = QueryFunctionContext<
   ReturnType<(typeof photosKeys)["search"]>
 >;
@@ -16,8 +13,6 @@ export type QueryPhotosProps = QueryFunctionContext<
 export const searchQueryPhotos: any = async ({
   queryKey,
 }: QueryPhotosProps): Promise<PhotoRepositoryList> => {
-  const [, query, page, per_page, color, orientation] = queryKey;
-
   const [pexel] = await Promise.all([
     //unsplashSearchPhotosApi(queryKey),
     pexelSearchPhotosApi(queryKey),

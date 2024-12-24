@@ -13,7 +13,7 @@ import { usePhotoStore, useSearchOptionStore } from "@/states";
 import { useShallow } from "zustand/shallow";
 import { Badge } from "@/components/ui/badge";
 import { useFormatter } from "next-intl";
-import { chunk3dAdvanceByHeight, chunks2Arr, uniqueBy } from "@/lib/utils";
+import { chunk3dAdvanceByHeight, chunks2Arr } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoveTopButton from "@/components/MoveTop";
@@ -107,7 +107,7 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
     pagenumber < (data?.toJson().total_pages as number) ? true : false;
 
   const newFormData = useMemo(() => {
-    let newPhotos = photoStore.current;
+    const newPhotos = photoStore.current;
     if (newPhotos.length === 0) return [];
     if (isScreen("md")) return chunks2Arr(newPhotos, 1);
     return chunk3dAdvanceByHeight(newPhotos);
