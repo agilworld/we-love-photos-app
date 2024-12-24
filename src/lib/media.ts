@@ -1,7 +1,7 @@
 export type MediaQueryType = "sm" | "md" | "lg" | "xl" | "2xl";
 
 export function isScreen(type: MediaQueryType) {
-  let mql: MediaQueryList = window.matchMedia("(max-width: 640px)");
+  let mql: MediaQueryList;
 
   switch (type) {
     case "sm":
@@ -25,6 +25,7 @@ export function isScreen(type: MediaQueryType) {
       break;
 
     default:
+      mql = window.matchMedia("(max-width: 1280px)");
       break;
   }
 

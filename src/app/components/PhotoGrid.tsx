@@ -1,12 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  EColorProps,
-  EOrientationProps,
-  photosKeys,
-  SearchPhotosProps,
-} from "@/_types/photos";
+import { EColorProps, EOrientationProps, photosKeys } from "@/_types/photos";
 import { useEffect, useState, memo, useMemo, useRef, useCallback } from "react";
 import { searchQueryPhotos } from "@/apis";
 import { SearchPhotosParams } from "@/_types/photos";
@@ -18,11 +13,12 @@ import { usePhotoStore, useSearchOptionStore } from "@/states";
 import { useShallow } from "zustand/shallow";
 import { Badge } from "@/components/ui/badge";
 import { useFormatter } from "next-intl";
-import { chunk3dAdvanceByHeight, chunks2Arr, uniqueBy } from "@/lib/utils";
+import { chunk3dAdvanceByHeight, chunks2Arr } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoveTopButton from "@/components/MoveTop";
 import { isScreen } from "@/lib/media";
+import { PhotoRepositoryList } from "@/lib/photoRepository";
 
 type PhotoGridProps = {
   keyword: string;
@@ -60,7 +56,7 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
   };
   const { query, page, per_page } = params;
   const { data, isFetching, refetch, isSuccess, isFetched } =
-    useQuery<SearchPhotosProps>({
+    useQuery<PhotoRepositoryList>({
       queryKey: photosKeys.search(query, page, per_page, color, orientation),
       queryFn: searchQueryPhotos,
       enabled: false,
@@ -75,10 +71,10 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
 
   useEffect(() => {
     usePhotoStore.subscribe((state) => (photoStore.current = state.photos));
-    if (pagenumber > 1 && data?.results && data.results.length > 0) {
-      appendPhotos(data?.results as PhotoResult[]);
+    if (pagenumber > 1 && data && data?.toJson().results.length > 0) {
+      appendPhotos(data.toJson().results as PhotoResult[]);
     } else if (data?.results) {
-      refreshPhotos(data?.results as PhotoResult[]);
+      refreshPhotos(data.toJson().results as PhotoResult[]);
     }
   }, [data, isFetched]);
 
@@ -107,13 +103,12 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
     }
   }, [moreData, isFetched]);
 
-  const hasNextPage = pagenumber < (data?.total_pages as number) ? true : false;
+  const hasNextPage =
+    pagenumber < (data?.toJson().total_pages as number) ? true : false;
 
   const newFormData = useMemo(() => {
-    let newPhotos = photoStore.current;
+    const newPhotos = photoStore.current;
     if (newPhotos.length === 0) return [];
-    newPhotos = uniqueBy(newPhotos, (v: any) => v.id) as PhotoResult[];
-
     if (isScreen("md")) return chunks2Arr(newPhotos, 1);
     return chunk3dAdvanceByHeight(newPhotos);
   }, [photoStore.current, resultQuery]);
@@ -133,12 +128,12 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
           <div className="flex items-center">
             <div>
               Found:
-              {isFetched && data?.total ? (
+              {isFetched && data?.toJson().total ? (
                 <Badge variant={"secondary"}>
                   {photoStore.current?.length} of{" "}
-                  {format.number(data?.total ?? 0)}
+                  {format.number(data?.toJson().total ?? 0)}
                 </Badge>
-              ) : data?.total === 0 ? null : (
+              ) : data?.toJson().total === 0 ? null : (
                 <Skeleton className="w-12 inline-flex h-[10px] rounded-lg" />
               )}
             </div>
@@ -156,11 +151,12 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
             )}
           </div>
           <div className="">
-            {isFetched && data?.total && data?.total > 0 ? (
+            {isFetched && data?.toJson().total && data?.toJson().total > 0 ? (
               <Badge variant={"secondary"}>
-                Page : {pagenumber} of {format.number(data?.total_pages ?? 0)}
+                Page : {pagenumber} of{" "}
+                {format.number(data?.toJson().total_pages ?? 0)}
               </Badge>
-            ) : data?.total === 0 ? null : (
+            ) : data?.toJson().total === 0 ? null : (
               <Skeleton className="w-12 h-[10px] rounded-lg" />
             )}
           </div>
