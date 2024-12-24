@@ -6,3 +6,12 @@ export const ApiHeader = (): HeadersInit => {
   );
   return headers;
 };
+
+export const PexelApiHeader = (): HeadersInit => {
+  const headers = new Headers();
+  headers.set(
+    "authorization",
+    process.env.NEXT_PUBLIC_PEXEL_CLIENT_KEY as string,
+  );
+  return headers;
+};
