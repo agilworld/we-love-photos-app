@@ -32,7 +32,7 @@ export default function PhotoGridItem({
     <div key={item.id} className="cursor-pointer" {...rest}>
       <img
         className="h-auto max-w-full rounded-lg shadow-lg hover:scale-105 duration-200 delay-75	ease-in-out"
-        src={item.urls?.small}
+        src={item.src?.medium}
       />
       {isLast && isFetching && (
         <Skeleton className="w-full mt-10 h-[250px] rounded-lg" />
@@ -71,8 +71,8 @@ export const PhotoDetailDrawer = ({
 
   const downloadPhoto = () => {
     //window.open(item.urls.full, "_blank")
-    if (item.urls?.full) {
-      const url = item.urls?.full as string;
+    if (item.src?.full) {
+      const url = item.src?.full as string;
       fetch(url)
         .then((response) => {
           if (!response.ok) {
@@ -84,7 +84,7 @@ export const PhotoDetailDrawer = ({
           const element = document.createElement("a");
           const urlRes = URL.createObjectURL(response);
           element.href = urlRes;
-          element.setAttribute("download", `welovephoto-${item.slug}.jpg`);
+          element.setAttribute("download", `welovephoto-${item.url}.jpg`);
           document.body.appendChild(element);
           element.click();
           document.body.removeChild(element);
@@ -97,11 +97,9 @@ export const PhotoDetailDrawer = ({
   };
 
   const initialName = () => {
-    let f, l;
-    if (item.user.first_name && item.user.last_name) {
-      f = item.user.first_name.charAt(0);
-      l = item.user.last_name.charAt(0);
-    } else {
+    let f = "U",
+      l = "n";
+    if (item.user?.name) {
       f = item.user.name?.charAt(0) ?? "U";
       l = item.user.name?.charAt(1) ?? "n";
     }
@@ -110,15 +108,14 @@ export const PhotoDetailDrawer = ({
 
   const desc = () => {
     return (
-      item.description?.slice(0, 100) ??
-      "" + (item.description?.length >= 100 ? "..." : "")
+      item.title?.slice(0, 100) ?? "" + (item.title?.length >= 100 ? "..." : "")
     );
   };
 
   const altDesc = () => {
     return (
-      item.alt_description?.slice(0, 100) ??
-      "" + (item.alt_description?.length >= 100 ? "..." : "")
+      item.description?.slice(0, 100) ??
+      "" + (item.description?.length >= 100 ? "..." : "")
     );
   };
 
@@ -128,10 +125,10 @@ export const PhotoDetailDrawer = ({
         <div className="mx-auto w-full max-w-4xl md:py-6">
           <div className="flex flex-col md:flex-row justify-center">
             <div className="w-full md:w-4/6">
-              {item.urls?.regular && isClient && (
+              {item.src?.large && isClient && (
                 <Image
-                  src={item.urls?.regular}
-                  alt={item.alt_description}
+                  src={item.src?.large}
+                  alt={item.description}
                   loader={imageLoader}
                   style={{
                     objectFit: "contain",
@@ -151,21 +148,23 @@ export const PhotoDetailDrawer = ({
                   {altDesc()}
                 </DrawerDescription>
                 <div className="flex items-center my-6">
-                  <Avatar className="mr-3">
-                    <AvatarImage src={item.user.profile_image.medium} />
-                    <AvatarFallback>{initialName()}</AvatarFallback>
-                  </Avatar>
+                  {item.user.avatar_url && (
+                    <Avatar className="mr-3">
+                      <AvatarImage src={item.user.avatar_url} />
+                      <AvatarFallback>{initialName()}</AvatarFallback>
+                    </Avatar>
+                  )}
                   <div className="text-xs">
                     <h4 className="font-regular">
                       Photo by{" "}
                       <span className="underline">{item.user.name}</span> on{" "}
-                      <span>Unsplash</span>{" "}
+                      <span>{item.from}</span>{" "}
                     </h4>
                     <div>
-                      {item.user.links.html && (
+                      {item.user.portfolio_url && (
                         <a
                           className="text-blue-600 visited:text-purple-600"
-                          href={item.user.links.html}
+                          href={item.user.portfolio_url}
                           target="_blank"
                         >
                           View Profile
