@@ -3,8 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Drawer,
   DrawerContent,
-  DrawerDescription,
-  DrawerClose,
   DrawerHeader,
   DrawerFooter,
   DrawerTitle,
