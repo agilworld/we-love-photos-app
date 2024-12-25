@@ -142,12 +142,15 @@ export const PhotoDetailDrawer = ({
               )}
             </div>
             <div className="w-full md:w-2/6">
-              <DrawerHeader className="text-left pt-10 pr-10 pl-10 md:pt-0 md:pl-10 md:pr-2">
+              <DrawerHeader
+                className="text-left 
+                pt-6 pr-8 pl-8 md:pt-0 md:pl-10 md:pr-2"
+              >
                 <DrawerTitle className="leading-tight">{desc()}</DrawerTitle>
                 <DrawerDescription className="leading-none text-md">
                   {altDesc()}
                 </DrawerDescription>
-                <div className="flex items-center my-6">
+                <div className="flex items-center my-4 md:my-6">
                   {item.user.avatar_url && (
                     <Avatar className="mr-3">
                       <AvatarImage src={item.user.avatar_url} />
@@ -174,7 +177,7 @@ export const PhotoDetailDrawer = ({
                   </div>
                 </div>
               </DrawerHeader>
-              <DrawerFooter className="mt-10 pt-2">
+              <DrawerFooter className="mt-2 md:mt-10 pt-2">
                 <Button onClick={downloadPhoto}>Download</Button>
                 <Button onClick={handleClose} variant="outline">
                   Close
