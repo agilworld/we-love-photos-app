@@ -1,6 +1,12 @@
 import { PhotoResult } from "@/_types/photos";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import changelogs from "@/data/changelogs.json";
+
+export function getLastVersion() {
+  const logs = changelogs.logs;
+  return changelogs.logs[logs.length - 1].version;
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
