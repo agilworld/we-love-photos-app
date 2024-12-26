@@ -12,6 +12,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { track } from "@vercel/analytics";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -70,7 +71,6 @@ export const PhotoDetailDrawer = ({
   };
 
   const downloadPhoto = () => {
-    //window.open(item.urls.full, "_blank")
     if (item.src?.full) {
       const url = item.src?.full as string;
       fetch(url)
@@ -89,6 +89,11 @@ export const PhotoDetailDrawer = ({
           element.click();
           document.body.removeChild(element);
           URL.revokeObjectURL(urlRes);
+
+          track("Download Image", {
+            id: item.id,
+            url: item.src?.full ?? null,
+          });
         })
         .catch((error) => {
           console.error("Error downloading the image:", error);
