@@ -64,7 +64,7 @@ const ChangelogDrawer = (props: TChangeLogProps) => {
                 </DrawerTitle>
               </DrawerHeader>
 
-              <div className="max-h-[65vh] overflow-y-scroll leading-none text-md">
+              <div className="max-h-[65vh] px-4 overflow-y-scroll leading-none text-md">
                 {changelogs.logs.map((item, index) => (
                   <div key={`log-${index}`} className="mb-4">
                     <h4 className="font-bold text-sm text-black">
