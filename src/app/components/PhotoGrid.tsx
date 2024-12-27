@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoveTopButton from "@/components/MoveTop";
 import { isScreen } from "@/lib/media";
+import { track } from "@vercel/analytics";
 import { PhotoRepositoryList } from "@/lib/photoRepository";
 
 type PhotoGridProps = {
@@ -127,7 +128,7 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
         >
           <div className="flex items-center">
             <div>
-              Found:
+              Results:
               {isFetched && data?.toJson().total ? (
                 <Badge variant={"secondary"}>
                   {photoStore.current?.length} of{" "}
@@ -220,6 +221,10 @@ const PhotoGridMemoized = memo(function PhotoGridResult({
   };
 
   const onOpenDrawer = (item: PhotoResult) => {
+    track("View Image", {
+      id: item.id,
+      url: item.src?.medium ?? null,
+    });
     setDrawerState(item);
   };
 
