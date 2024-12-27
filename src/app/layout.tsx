@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { getLocale, getMessages } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Providers from "./providers";
 
@@ -37,6 +38,7 @@ export default async function RootLayout({
       >
         <Providers locale={locale} messages={messages}>
           {children}
+          <Analytics mode={"production"} />
         </Providers>
       </body>
     </html>
