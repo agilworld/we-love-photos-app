@@ -11,16 +11,27 @@ import changelogs from "@/data/changelogs.json";
 import { Button } from "@/components/ui/button";
 import { ComponentPropsWithRef, useState } from "react";
 import { getLastVersion } from "@/lib/utils";
+import { Heart } from "lucide-react";
+import { H4 } from "@/components/ui/heading";
 
-export default function Header() {
+type HeaderProps = {
+  withBrand?: boolean;
+};
+export default function Header(props: HeaderProps) {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const handleClose = () => {
     setOpenDrawer(false);
   };
 
   return (
-    <div className="flex justify-between items-center text-xs text-gray-600 py-4">
-      <div>
+    <div className="flex px-6 shadow-sm border-b border-gray-200 justify-between items-center text-xs text-gray-600 py-4">
+      <div className="flex items-center gap-3">
+        {props.withBrand && (
+          <a href="/" className="flex items-center">
+            <Heart size={24} className="mr-2" color="red" />
+            <H4 className="mb-0 text-lg">We Love Photos</H4>
+          </a>
+        )}
         <a className="text-sm" href="https://dianafrial.net" target="_blank">
           <Badge variant={"outline"}>Hire me!</Badge>
         </a>
