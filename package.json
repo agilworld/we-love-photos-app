@@ -28,6 +28,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@huggingface/transformers": "^3.2.3",
     "@next/env": "^15.1.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -41,6 +42,7 @@
     "lucide-react": "^0.462.0",
     "next": "15.0.3",
     "next-intl": "^3.26.1",
+    "onnxruntime-web": "^1.20.1",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "shadcn-ui": "^0.9.3",
