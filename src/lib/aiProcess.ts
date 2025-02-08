@@ -10,7 +10,7 @@ import {
 } from "@huggingface/transformers";
 
 // Initialize different model configurations
-const WEBGPU_MODEL_ID = "ZhengPeng7/BiRefNet";
+const WEBGPU_MODEL_ID = "Xenova/modnet";
 const FALLBACK_MODEL_ID = "briaai/RMBG-1.4";
 
 interface ModelState {
@@ -110,17 +110,17 @@ export async function initializeModel(forceModelId?: string): Promise<boolean> {
 
       state.model = await AutoModel.from_pretrained(FALLBACK_MODEL_ID, {
         config: {
-            model_type: "custom",
-            is_encoder_decoder: false,
-            max_position_embeddings: 1024,
-            "transformers.js_config": {
-                kv_cache_dtype: undefined,
-                free_dimension_overrides: undefined,
-                device: undefined,
-                dtype: undefined,
-                use_external_data_format: undefined
-            },
-            normalized_config: undefined
+          model_type: "custom",
+          is_encoder_decoder: false,
+          max_position_embeddings: 1024,
+          "transformers.js_config": {
+            kv_cache_dtype: undefined,
+            free_dimension_overrides: undefined,
+            device: undefined,
+            dtype: undefined,
+            use_external_data_format: undefined,
+          },
+          normalized_config: undefined,
         },
       });
 
@@ -202,7 +202,7 @@ export async function initializeModel(forceModelId?: string): Promise<boolean> {
     state.currentModelId = selectedModelId;
     return true;
   } catch (error) {
-    console.error("Error initializing model:", error);
+    console.log("Error initializing model:", error);
     if (forceModelId === WEBGPU_MODEL_ID) {
       console.log("Falling back to cross-browser model...");
       return initializeModel(FALLBACK_MODEL_ID);
