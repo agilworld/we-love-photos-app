@@ -16,7 +16,8 @@ import { H4 } from "@/components/ui/heading";
 
 type HeaderProps = {
   withBrand?: boolean;
-};
+}
+
 export default function Header(props: HeaderProps) {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const handleClose = () => {

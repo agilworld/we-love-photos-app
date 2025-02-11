@@ -2,9 +2,6 @@
 
 import { useSearchParams } from "next/navigation";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { initializeModel, getModelInfo } from "@/lib/aiProcess";
-import LoaderModel from "@/components/LoaderModel";
-import { processImages } from "@/lib/aiProcess";
 import ImageProcess from "@/app/components/ImageProcess";
 
 export default function PhotoRemoval() {
