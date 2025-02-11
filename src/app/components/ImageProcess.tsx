@@ -58,14 +58,7 @@ export default function ImageProcess(props: ImageProps) {
 
   return (
     <div className="flex relative h-full justify-center items-center">
-      {!isProcessLoading ? (
-        <button
-          onClick={handleClickProcess}
-          className="absolute px-4 py-2 z2 text-white bg-black rounded-md"
-        >
-          Start to Remove
-        </button>
-      ) : imageAi ? (
+      {imageAi ? (
         <Image
           alt={"background removal"}
           width={props.dimension.width}
@@ -81,7 +74,12 @@ export default function ImageProcess(props: ImageProps) {
           }
         />
       ) : (
-        <div>Failed removal background...</div>
+        <button
+          onClick={handleClickProcess}
+          className="absolute px-4 py-2 z2 text-white bg-black rounded-md"
+        >
+          Start to Remove
+        </button>
       )}
     </div>
   );
