@@ -3,6 +3,9 @@ import { initializeModel, getModelInfo, processImage } from "@/lib/aiProcess";
 import Image from "next/image";
 import LoaderModel from "@/components/LoaderModel";
 import { urlToFile } from "@/lib/utils";
+import { PencilIcon } from "lucide-react";
+import EditPhotoDrawer from "./EditPhotoDrawer";
+
 type ImageProps = {
   src: string;
   dimension: { width: number; height: number };
@@ -14,6 +17,7 @@ export default function ImageProcess(props: ImageProps) {
   const [isWebGPU, setIsWebGPU] = useState<boolean>(false);
   const [isIOS, setIsIOS] = useState<boolean>(false);
   const [imageAi, setImageAi] = useState<string>();
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState<boolean>(false);
 
   const handleClickProcess = useCallback(() => {
     setIsModelLoading(true);
@@ -56,8 +60,28 @@ export default function ImageProcess(props: ImageProps) {
     }
   }, []);
 
+  const onShowEditDrawer = () => {
+    setIsEditDrawerOpen(true);
+  };
+
   return (
     <div className="flex relative h-full justify-center items-center">
+      <div
+        onClick={onShowEditDrawer}
+        className="absolute flex w-8 h-8 bg-black right-2.5 shadow-lg top-2.5 rounded-full"
+      >
+        <PencilIcon className="text-white w-4 h-4 mx-auto my-auto" />
+      </div>
+
+      {isEditDrawerOpen && (
+        <EditPhotoDrawer
+          image={props.src}
+          width={props.dimension.width}
+          height={props.dimension.height}
+          onCloseDrawer={() => setIsEditDrawerOpen(false)}
+        />
+      )}
+
       {imageAi ? (
         <Image
           alt={"background removal"}
@@ -70,7 +94,7 @@ export default function ImageProcess(props: ImageProps) {
           text={
             isModelLoading
               ? "Loading background removal model"
-              : "Processing removal model"
+              : "Processing removal"
           }
         />
       ) : (
