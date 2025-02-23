@@ -72,12 +72,15 @@ export const PhotoDetailDrawer = ({
   };
 
   const editPhoto = () => {
-    router.push(`/removebg?src=${item.src?.large}`);
+    router.push(
+      `/removebg?src=${item.src?.large}&w=${item.width}&=${item.height}`,
+    );
   };
 
   const downloadPhoto = () => {
     if (item.src?.full) {
       const url = item.src?.full as string;
+      item.src.large2x;
       fetch(url)
         .then((response) => {
           if (!response.ok) {

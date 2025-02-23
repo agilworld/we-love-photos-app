@@ -3,70 +3,69 @@
 import { useSearchParams } from "next/navigation";
 import { useRef, useState, useEffect, useCallback } from "react";
 import ImageProcess from "@/app/components/ImageProcess";
+import { urlToFile } from "@/lib/utils";
+import { ImageFile } from "@/_types/removal";
+import Image from "next/image";
 
 export default function PhotoRemoval() {
+  const [isClient, setIsClient] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const searchParams = useSearchParams();
   const imageSrc = decodeURIComponent(searchParams.get("src") ?? "");
-  const [imgDimensions, setImgDimensions] = useState<{
-    width: number;
-    height: number;
-  }>({ width: 0, height: 0 });
+  const imageOrigWidth = decodeURIComponent(searchParams.get("w") ?? "");
+  const imageOrigHeight = decodeURIComponent(searchParams.get("h") ?? "");
+  const [imageFile, setImageFile] = useState<ImageFile>({
+    originDim: {
+      width: parseInt(imageOrigWidth),
+      height: parseInt(imageOrigHeight),
+    },
+  });
 
   useEffect(() => {
-    // (async () => {
-    //   try {
-    //     const initialized = await initializeModel();
-    //     if (!initialized) {
-    //       throw new Error("Failed to initialize background removal model");
-    //     }
-    //     const { isWebGPUSupported, isIOS: isIOSDevice } = getModelInfo();
-    //     setIsWebGPU(isWebGPUSupported);
-    //     setIsIOS(isIOSDevice);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // })();
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (imageRef.current?.offsetWidth && imageRef.current?.offsetHeight) {
-      setImgDimensions({
-        width: imageRef.current.offsetWidth,
-        height: imageRef.current.offsetHeight,
-      });
+    async function initImage() {
+      if (imageRef.current?.width && imageRef.current?.height) {
+        const srcFile = await urlToFile(imageSrc, "image.jpg", "image/jpeg");
+        console.log("set image file");
+        setImageFile({
+          ...imageFile,
+          src: srcFile,
+          placeDim: {
+            width: imageRef.current.width,
+            height: imageRef.current.height,
+          },
+        });
+      }
     }
-  }, [imageRef.current]);
-
-  const handleClickProcess = useCallback(() => {}, []);
-
-  // if (isLoading) {
-  //   return <LoaderModel />;
-  // }
+    initImage();
+  }, [imageSrc, imageRef.current?.width, imageRef.current?.height]);
+  console.log("imageRef", imageRef.current?.width);
 
   return (
-    <div className="flex items-center mx-auto mt-20 px-4 gap-10">
+    <div className="flex mx-auto mt-20 px-4 gap-10">
       <div className="cursor-pointer w-1/2">
-        <img
+        <Image
           ref={imageRef}
           className="h-auto max-w-full rounded-lg shadow-lg"
           src={imageSrc}
+          width={500}
+          height={500}
+          priority={true}
+          alt="source image"
         />
       </div>
 
-      {imgDimensions.width > 0 && (
+      {imageFile.placeDim && imageFile.placeDim?.width > 0 && (
         <div
+          className="flex flex-col w-1/2 "
           style={{
-            width: imgDimensions.width + 4,
-            height: imgDimensions.height + 4,
+            width: imageFile?.placeDim.width + 4,
           }}
-          className="cursor-pointer w-1/2 rounded-lg border-4 border-slate-200 border-dashed"
         >
-          <ImageProcess src={imageSrc} dimension={imgDimensions} />
-          {/* <img
-          className="h-auto max-w-full rounded-lg shadow-lg"
-          src={imageSrc}
-        /> */}
+          <ImageProcess imageFile={imageFile} />
         </div>
       )}
     </div>

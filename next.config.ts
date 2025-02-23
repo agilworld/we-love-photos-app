@@ -27,10 +27,11 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "images.pexel.com",
       },
     ],
   },
