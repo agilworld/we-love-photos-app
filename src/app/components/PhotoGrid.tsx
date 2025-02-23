@@ -240,6 +240,7 @@ const PhotoGridMemoized = memo(function PhotoGridResult({
                 <PhotoGridItem
                   key={item.id}
                   onClick={() => onOpenDrawer(item)}
+                  onBlur={onCloseDrawer}
                   isFetching={isFetching}
                   isLast={idx === items.length - 1 && isMoredata}
                   item={item}

@@ -98,6 +98,7 @@ export const urlToFile = async (
   try {
     const res = await fetch(url);
     const blob = await res.blob();
+
     return new File([blob], filename, { type: mimeType });
   } catch (error) {
     console.error(error);
