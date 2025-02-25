@@ -46,36 +46,42 @@ export default function EditPhotoDrawer({
   onSave,
 }: EditPhotoDrawerProps) {
   const [open, setOpen] = useState<boolean>(true);
-  const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [bgcolor, setBgcolor] = useState<string>(defaultBgcolor ?? "#ffffff");
+
   const handleClose = () => {
     setOpen(false);
-
     setTimeout(() => {
+      setIsLoading(false);
       onCloseDrawer();
-    }, 500);
+    }, 200);
   };
 
   const handleApplyChanges = async () => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    setIsLoading(true);
+    try {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    const img = new Image();
-    img.src = image;
-    await new Promise((resolve) => (img.onload = resolve));
+      const img = new Image();
+      img.src = image;
+      await new Promise((resolve) => (img.onload = resolve));
 
-    canvas.width = img.width;
-    canvas.height = img.height;
+      canvas.width = img.width;
+      canvas.height = img.height;
 
-    ctx.fillStyle = bgcolor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // Draw the processed image
-    ctx.drawImage(img, 0, 0);
+      ctx.fillStyle = bgcolor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Draw the processed image
+      ctx.drawImage(img, 0, 0);
 
-    const dataUrl = canvas.toDataURL("image/png");
-    onSave(dataUrl, bgcolor);
-    handleClose();
+      const dataUrl = canvas.toDataURL("image/png");
+      onSave(dataUrl, bgcolor);
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -144,8 +150,14 @@ export default function EditPhotoDrawer({
                 </div>
               </DrawerHeader>
               <DrawerFooter className="mt-2 md:mt-10 pt-2 pl-8">
-                <Button onClick={handleApplyChanges}>Apply Changes</Button>
-                <Button onClick={handleClose} variant="outline">
+                <Button disabled={isLoading} onClick={handleApplyChanges}>
+                  {isLoading ? "Processing..." : "Apply Changes"}
+                </Button>
+                <Button
+                  disabled={isLoading}
+                  onClick={handleClose}
+                  variant="outline"
+                >
                   Close
                 </Button>
               </DrawerFooter>
