@@ -116,6 +116,7 @@ export default function ImageProcess(props: ImageProps) {
             alt={"background removal"}
             width={imgDimension.width as number}
             height={imgDimension.height as number}
+            className="rounded-lg"
             src={processedEditAi || processedAi}
           />
         ) : isModelLoading || isProcessLoading ? (
