@@ -9,13 +9,15 @@ import { Button } from "@/components/ui/button";
 import { ImageFile } from "@/_types/removal";
 import clsx from "clsx";
 import ButtonDropdown from "@/components/ButtonDropdown";
+import { track } from "@vercel/analytics";
 
 type ImageProps = {
   imageFile: ImageFile;
+  imageSrc: string;
 };
 
 export default function ImageProcess(props: ImageProps) {
-  const { imageFile } = props;
+  const { imageFile, imageSrc } = props;
   const imgDimension = imageFile.placeDim as ImageFile["placeDim"];
 
   const [isModelLoading, setIsModelLoading] = useState<boolean>(false);
@@ -28,6 +30,9 @@ export default function ImageProcess(props: ImageProps) {
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState<boolean>(false);
 
   const handleClickProcess = useCallback(() => {
+    track("Start to Process Remove BG", {
+      url: imageSrc,
+    });
     setIsModelLoading(true);
     setIsProcessLoading(true);
     (async () => {
@@ -153,6 +158,9 @@ export default function ImageProcess(props: ImageProps) {
               link: processedAi,
               disabled: false,
               download: "welovephotos-origin.png",
+              handleClick: () => {
+                track("Download Transparent Image");
+              },
             },
             {
               buttonText: "Edited Image",
@@ -160,6 +168,9 @@ export default function ImageProcess(props: ImageProps) {
               disabled: processedEditAi ? false : true,
               link: processedEditAi,
               download: "welovephotos-colored-bg.png",
+              handleClick: () => {
+                track("Download Edited Image");
+              },
             },
           ]}
         />
