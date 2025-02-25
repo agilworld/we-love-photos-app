@@ -74,10 +74,10 @@ export default function ImageProcess(props: ImageProps) {
   const transparentBg = `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAGUExURb+/v////5nD/3QAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAUSURBVBjTYwABQSCglEENMxgYGAAynwRB8BEAgQAAAABJRU5ErkJggg==")`;
 
   return (
-    <div className="h-full ">
+    <div className="h-full">
       <div
         style={{
-          height: processedAi ? "auto" : (imgDimension?.height as number) + 4,
+          height: processedAi ? "auto" : (imgDimension?.height as number),
           backgroundImage: processedAi ? transparentBg : undefined,
           backgroundRepeat: processedAi ? "repeat" : undefined,
         }}
@@ -134,9 +134,9 @@ export default function ImageProcess(props: ImageProps) {
         ) : (
           <button
             onClick={handleClickProcess}
-            className="absolute px-4 py-2 z2 text-white bg-black rounded-md"
+            className="absolute px-4 py-2 z2 text-white bg-black shadow-lg rounded-md"
           >
-            Start to Remove
+            Start to Process
           </button>
         )}
       </div>
@@ -150,11 +150,15 @@ export default function ImageProcess(props: ImageProps) {
               buttonText: "Transparent Image",
               key: "origin",
               link: processedAi,
+              disabled: false,
+              download: "welovephotos-origin.png",
             },
             {
               buttonText: "Edited Image",
               key: "edited",
+              disabled: processedEditAi ? false : true,
               link: processedEditAi,
+              download: "welovephotos-colored-bg.png",
             },
           ]}
         />

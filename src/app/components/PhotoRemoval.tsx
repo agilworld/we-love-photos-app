@@ -29,7 +29,6 @@ export default function PhotoRemoval() {
     async function initImage() {
       if (imageRef.current?.width && imageRef.current?.height) {
         const srcFile = await urlToFile(imageSrc, "image.jpg", "image/jpeg");
-        console.log("set image file");
         setImageFile({
           ...imageFile,
           src: srcFile,
@@ -41,33 +40,43 @@ export default function PhotoRemoval() {
       }
     }
     initImage();
-  }, [imageSrc, imageRef.current?.width, imageRef.current?.height]);
-  console.log("imageRef", imageRef.current?.width);
+  }, [imageSrc]);
 
   return (
-    <div className="flex mx-auto mt-20 px-4 gap-10">
-      <div className="cursor-pointer w-1/2">
-        <Image
-          ref={imageRef}
-          className="h-auto max-w-full rounded-lg shadow-lg"
-          src={imageSrc}
-          width={500}
-          height={500}
-          priority={true}
-          alt="source image"
-        />
-      </div>
-
-      {imageFile.placeDim && imageFile.placeDim?.width > 0 && (
-        <div
-          className="flex flex-col w-1/2 "
-          style={{
-            width: imageFile?.placeDim.width + 4,
-          }}
-        >
-          <ImageProcess imageFile={imageFile} />
+    <div className="relative">
+      <div className="flex mx-auto mt-8 py-4 gap-10">
+        <div className="cursor-pointer w-1/2">
+          <Image
+            ref={imageRef}
+            className="h-auto max-w-full rounded-lg shadow-lg"
+            src={imageSrc}
+            width={500}
+            height={500}
+            priority={true}
+            alt="source image"
+          />
+          <div className="mt-8 p-4 bg-slate-100 border-solid border border-slate-400 rounded-lg">
+            Download original image{" "}
+            <a
+              className="text-red-600 underline underline-offset-2"
+              href={imageSrc}
+            >
+              here
+            </a>
+          </div>
         </div>
-      )}
+
+        {imageFile.placeDim && imageFile.placeDim?.width > 0 && (
+          <div
+            className="flex flex-col w-1/2 "
+            style={{
+              width: imageFile?.placeDim.width,
+            }}
+          >
+            <ImageProcess imageFile={imageFile} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
