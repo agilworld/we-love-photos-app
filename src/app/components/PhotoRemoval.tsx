@@ -73,7 +73,7 @@ export default function PhotoRemoval() {
               width: imageFile?.placeDim.width,
             }}
           >
-            <ImageProcess imageFile={imageFile} />
+            <ImageProcess imageSrc={imageSrc} imageFile={imageFile} />
           </div>
         )}
       </div>

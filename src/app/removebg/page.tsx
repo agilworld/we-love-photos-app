@@ -1,11 +1,21 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import Footer from "./../components/Footer";
 import Hero from "./../components/Hero";
 import Header from "./../components/Header";
 import PhotoRemoval from "../components/PhotoRemoval";
+import { useEffect } from "react";
+import { track } from "@vercel/analytics";
 
 export default function Removebg() {
+  const searchParams = useSearchParams();
+  const imageSrc = decodeURIComponent(searchParams.get("src") ?? "");
+  useEffect(() => {
+    track("View Remove BG Page", {
+      url: imageSrc,
+    });
+  }, []);
   return (
     <div className="">
       <Header withBrand />
