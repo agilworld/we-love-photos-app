@@ -1,21 +1,15 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import Footer from "./../components/Footer";
-import Hero from "./../components/Hero";
 import Header from "./../components/Header";
-import PhotoRemoval from "../components/PhotoRemoval";
-import { useEffect } from "react";
-import { track } from "@vercel/analytics";
+import dynamic from "next/dynamic";
 
-export default function Removebg() {
-  const searchParams = useSearchParams();
-  const imageSrc = decodeURIComponent(searchParams.get("src") ?? "");
-  useEffect(() => {
-    track("View Remove BG Page", {
-      url: imageSrc,
-    });
-  }, []);
+const PhotoRemovalClientComponent = dynamic(
+  () => import("../components/PhotoRemoval"),
+  { ssr: false }, // Disable server-side rendering
+);
+
+export default function Page() {
   return (
     <div className="">
       <Header withBrand />
@@ -31,7 +25,7 @@ export default function Removebg() {
             Next version: Enable upload your avatar and remove it!
           </p>
         </div>
-        <PhotoRemoval />
+        <PhotoRemovalClientComponent />
         <Footer />
       </div>
     </div>
