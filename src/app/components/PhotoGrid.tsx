@@ -1,12 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  EColorProps,
-  EOrientationProps,
-  photosKeys,
-  SearchPhotosProps,
-} from "@/_types/photos";
+import { EColorProps, EOrientationProps, photosKeys } from "@/_types/photos";
 import { useEffect, useState, memo, useMemo, useRef, useCallback } from "react";
 import { searchQueryPhotos } from "@/apis";
 import { SearchPhotosParams } from "@/_types/photos";
@@ -18,10 +13,13 @@ import { usePhotoStore, useSearchOptionStore } from "@/states";
 import { useShallow } from "zustand/shallow";
 import { Badge } from "@/components/ui/badge";
 import { useFormatter } from "next-intl";
-import { chunk3dAdvanceByHeight, uniqueBy } from "@/lib/utils";
+import { chunk3dAdvanceByHeight, chunks2Arr } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import MoveTopButton from "@/components/MoveTop";
+import { isScreen } from "@/lib/media";
+import { track } from "@vercel/analytics";
+import { PhotoRepositoryList } from "@/lib/photoRepository";
 
 type PhotoGridProps = {
   keyword: string;
@@ -50,7 +48,6 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
       orientation: state.orientation,
     })),
   );
-  //const pagenumber = useScrollEndEvent()
   const params: SearchPhotosParams = {
     query: resultQuery,
     page: pagenumber,
@@ -60,7 +57,7 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
   };
   const { query, page, per_page } = params;
   const { data, isFetching, refetch, isSuccess, isFetched } =
-    useQuery<SearchPhotosProps>({
+    useQuery<PhotoRepositoryList>({
       queryKey: photosKeys.search(query, page, per_page, color, orientation),
       queryFn: searchQueryPhotos,
       enabled: false,
@@ -75,10 +72,10 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
 
   useEffect(() => {
     usePhotoStore.subscribe((state) => (photoStore.current = state.photos));
-    if (pagenumber > 1 && data?.results && data.results.length > 0) {
-      appendPhotos(data?.results as PhotoResult[]);
+    if (pagenumber > 1 && data && data?.toJson().results.length > 0) {
+      appendPhotos(data.toJson().results as PhotoResult[]);
     } else if (data?.results) {
-      refreshPhotos(data?.results as PhotoResult[]);
+      refreshPhotos(data.toJson().results as PhotoResult[]);
     }
   }, [data, isFetched]);
 
@@ -107,12 +104,13 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
     }
   }, [moreData, isFetched]);
 
-  const hasNextPage = pagenumber < (data?.total_pages as number) ? true : false;
+  const hasNextPage =
+    pagenumber < (data?.toJson().total_pages as number) ? true : false;
 
   const newFormData = useMemo(() => {
-    let newPhotos = photoStore.current;
+    const newPhotos = photoStore.current;
     if (newPhotos.length === 0) return [];
-    newPhotos = uniqueBy(newPhotos, (v: any) => v.id) as PhotoResult[];
+    if (isScreen("md")) return chunks2Arr(newPhotos, 1);
     return chunk3dAdvanceByHeight(newPhotos);
   }, [photoStore.current, resultQuery]);
 
@@ -120,9 +118,6 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
     setMoreData(true);
     setPagenumber((prev) => prev + 1);
   }, [moreData, setMoreData, setPagenumber]);
-
-  console.log("newFormData", newFormData);
-  console.log("data", data);
 
   return (
     <>
@@ -133,13 +128,13 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
         >
           <div className="flex items-center">
             <div>
-              Found:
-              {isFetched && data?.total ? (
+              Results:
+              {isFetched && data?.toJson().total ? (
                 <Badge variant={"secondary"}>
                   {photoStore.current?.length} of{" "}
-                  {format.number(data?.total ?? 0)}
+                  {format.number(data?.toJson().total ?? 0)}
                 </Badge>
-              ) : data?.total === 0 ? null : (
+              ) : data?.toJson().total === 0 ? null : (
                 <Skeleton className="w-12 inline-flex h-[10px] rounded-lg" />
               )}
             </div>
@@ -157,11 +152,12 @@ export default function PhotoGrid({ keyword }: PhotoGridProps) {
             )}
           </div>
           <div className="">
-            {isFetched && data?.total && data?.total > 0 ? (
+            {isFetched && data?.toJson().total && data?.toJson().total > 0 ? (
               <Badge variant={"secondary"}>
-                Page : {pagenumber} of {format.number(data?.total_pages ?? 0)}
+                Page : {pagenumber} of{" "}
+                {format.number(data?.toJson().total_pages ?? 0)}
               </Badge>
-            ) : data?.total === 0 ? null : (
+            ) : data?.toJson().total === 0 ? null : (
               <Skeleton className="w-12 h-[10px] rounded-lg" />
             )}
           </div>
@@ -225,6 +221,10 @@ const PhotoGridMemoized = memo(function PhotoGridResult({
   };
 
   const onOpenDrawer = (item: PhotoResult) => {
+    track("View Image", {
+      id: item.id,
+      url: item.src?.medium ?? null,
+    });
     setDrawerState(item);
   };
 
@@ -233,13 +233,14 @@ const PhotoGridMemoized = memo(function PhotoGridResult({
       {!isFetched && !isMoredata ? (
         <PhotoGridLoader />
       ) : rows.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {rows.map((items, chunkIdx) => (
             <div key={chunkIdx} className="flex flex-col gap-5">
               {items.map((item, idx) => (
                 <PhotoGridItem
                   key={item.id}
                   onClick={() => onOpenDrawer(item)}
+                  onBlur={onCloseDrawer}
                   isFetching={isFetching}
                   isLast={idx === items.length - 1 && isMoredata}
                   item={item}

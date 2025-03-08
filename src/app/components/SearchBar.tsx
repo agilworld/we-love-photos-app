@@ -35,7 +35,7 @@ export default function SearchBar() {
           <Input
             onChange={handleSearch}
             type="text"
-            placeholder="Type keyword here e.g. tiger, laptop with desk"
+            placeholder="Type keyword e.g. tiger, laptop with desk"
             className="w-full md:text-xl text-xl shadow-lg 
                             h-16 px-8 pl-16 pr-20 py-4"
           />

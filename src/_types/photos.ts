@@ -1,31 +1,33 @@
 export enum EOrderByProps {
   relevant = "Relevance",
   latest = "Latest",
-  oldest = "Oldest"
+  oldest = "Oldest",
 }
 
 export enum EContentFilterProps {
   low = "Low",
-  high = "High"
+  high = "High",
 }
 
 export enum EColorProps {
-  black_and_white = "Black & White",
+  brown = "Brown",
   black = "Black",
   white = "White",
+  gray = "Gray",
   yellow = "Yellow",
   red = "Red",
   blue = "Blue",
-  magenta = "Magenta",
+  pink = "Pink",
   green = "Green",
   teal = "Teal",
-  orange = "Orange"
+  orange = "Orange",
+  turqoise = "Turquoise",
 }
 
 export enum EOrientationProps {
   landscape = "Landscape",
   portrait = "Portrait",
-  squarish = "Squarish"
+  square = "Square",
 }
 
 export type SearchPhotosBaseParams = {
@@ -49,7 +51,7 @@ export const photosKeys = {
     color?: keyof typeof EColorProps,
     orientation?: keyof typeof EOrientationProps,
     order_by?: keyof typeof EOrderByProps,
-    content_filter?: keyof typeof EContentFilterProps
+    content_filter?: keyof typeof EContentFilterProps,
   ) =>
     [
       ...photosKeys.all,
@@ -59,17 +61,24 @@ export const photosKeys = {
       color,
       orientation,
       order_by,
-      content_filter
-    ] as const
+      content_filter,
+    ] as const,
 };
 
 export type PhotoUrlTypes = {
-  raw: string;
-  full: string;
-  regular: string;
-  small: string;
-  small_s3: string;
-  thumb: string;
+  raw?: string;
+  full?: string;
+  regular?: string;
+  small?: string;
+  small_s3?: string;
+  thumb?: string;
+  original?: string;
+  large2x?: string;
+  large?: string;
+  medium?: string;
+  portrait?: string;
+  landscape?: string;
+  tiny?: string;
 };
 
 export type PhotoLinksTypes = {
@@ -79,51 +88,77 @@ export type PhotoLinksTypes = {
   download_location: string;
 };
 
-export type PhotoUserProps = {
+export type BasePhotoUserProps = {
   id: string;
   name: string;
-  first_name: string;
-  last_name: string;
   portfolio_url: string;
-  bio: string;
-  location: string;
-  profile_image: {
+  avatar_url?: string;
+};
+
+export type PhotoUserProps = BasePhotoUserProps & {
+  first_name?: string;
+  last_name?: string;
+  bio?: string;
+  location?: string;
+  profile_image?: {
     small: string;
     medium: string;
   };
-  links: {
-    self: string;
-    html: string;
-    photos: string;
+  links?: {
+    self?: string;
+    html?: string;
+    photos?: string;
     likes: string;
     portfolio: string;
   };
 };
 
-export type PhotoResult = {
+export type BasePhotoResult = {
   id: string;
-  slug: string;
-  created_at: string;
-  updated_at: string;
-  promoted_at: string;
   width: number;
   height: number;
-  color: string;
-  blur_hash: string;
   description: string;
+  likes: number;
+};
+
+export type PhotoResult = BasePhotoResult & {
+  url: string;
+  color: string;
+  title: string;
+  src: Partial<PhotoUrlTypes>;
+  user: BasePhotoUserProps;
+  from: string;
+};
+
+export type PexelPhotoResult = BasePhotoResult & {
+  url: string;
+  avg_color: string;
+  description: string;
+  alt: string;
+  src: Partial<PhotoUrlTypes>;
+  photographer: string;
+  photographer_url: string;
+  photographer_id: number;
+};
+
+export type UnsplashPhotoResult = BasePhotoResult & {
+  slug: string;
+  color: string;
   alt_description: string;
   urls: Partial<PhotoUrlTypes>;
-  links: PhotoLinksTypes;
-  likes: number;
-  liked_by_user: boolean;
-  sponsorship: null | string;
-  asset_type: string;
-  topic_submissions: null | object;
   user: PhotoUserProps;
 };
 
-export type SearchPhotosProps = {
+export type UnsplashSearchPhotosProps = {
   total: number;
   total_pages: number;
-  results: PhotoResult[];
+  results: UnsplashPhotoResult[];
+};
+
+export type PexelSearchPhotosProps = {
+  page: number;
+  per_page: number;
+  total_results: number;
+  photos: PexelPhotoResult[];
+  next_page: string;
 };
