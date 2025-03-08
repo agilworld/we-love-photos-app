@@ -1,6 +1,12 @@
 import { PhotoResult } from "@/_types/photos";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import changelogs from "@/data/changelogs.json";
+
+export function getLastVersion() {
+  const logs = changelogs.logs;
+  return changelogs.logs[logs.length - 1].version;
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -62,4 +68,38 @@ export const chunk3dAdvanceByHeight = (arr: PhotoResult[]) => {
   });
 
   return newArr;
+};
+
+const keys = (x: any) =>
+  Object.getOwnPropertyNames(x).concat(
+    Object.getOwnPropertyNames(x?.__proto__),
+  );
+
+const isObject = (v: any) =>
+  Object.prototype.toString.call(v) === "[object Object]";
+
+export const classToObject = (clss: any) =>
+  keys(clss ?? {}).reduce((object: any, key) => {
+    const [val, arr, obj] = [
+      clss[key],
+      Array.isArray(clss[key]),
+      isObject(clss[key]),
+    ];
+    object[key] = arr ? val.map(classToObject) : obj ? classToObject(val) : val;
+    return object;
+  }, {});
+
+export const urlToFile = async (
+  url: string,
+  filename: string,
+  mimeType: string,
+) => {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+
+    return new File([blob], filename, { type: mimeType });
+  } catch (error) {
+    console.error(error);
+  }
 };
