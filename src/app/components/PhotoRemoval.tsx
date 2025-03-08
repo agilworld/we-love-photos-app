@@ -1,14 +1,17 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import ImageProcess from "@/app/components/ImageProcess";
 import { urlToFile } from "@/lib/utils";
 import { ImageFile } from "@/_types/removal";
 import Image from "next/image";
 
 export default function PhotoRemoval() {
-  const [isClient, setIsClient] = useState(false);
+  const [, setIsClient] =
+    useState(
+      false,
+    ); /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const imageRef = useRef<HTMLImageElement>(null);
   const searchParams = useSearchParams();
   const imageSrc = decodeURIComponent(searchParams.get("src") ?? "");
