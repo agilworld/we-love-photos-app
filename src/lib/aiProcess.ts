@@ -1,3 +1,5 @@
+"use client";
+
 import {
   env,
   AutoModel,
@@ -251,7 +253,7 @@ export async function processImage(image: File): Promise<File> {
     canvas.width = img.width;
     canvas.height = img.height;
     const ctx = canvas.getContext("2d");
-    
+
     if (!ctx) throw new Error("Could not get 2d context");
 
     // Draw original image output to canvas
