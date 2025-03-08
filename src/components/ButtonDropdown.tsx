@@ -43,7 +43,7 @@ export default function ButtonDropdown({
               download={item.disabled ? undefined : item.download}
               onClick={
                 item?.handleClick
-                  ? () => item?.handleClick(item.key)
+                  ? () => item.handleClick && item.handleClick(item.key)
                   : undefined
               }
               style={{ color: item.disabled ? "slategray" : "black" }}
