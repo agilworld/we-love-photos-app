@@ -32,6 +32,11 @@
       "version": "1.3.0",
       "date": "2024-12-27",
       "items": ["Add Sentry logging", "Add analytics with Vercel"]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2025-02-25",
+      "items": ["Feat: Remove Background AI tool"]
     }
   ]
 }
