@@ -88,3 +88,18 @@ export const classToObject = (clss: any) =>
     object[key] = arr ? val.map(classToObject) : obj ? classToObject(val) : val;
     return object;
   }, {});
+
+export const urlToFile = async (
+  url: string,
+  filename: string,
+  mimeType: string,
+) => {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+
+    return new File([blob], filename, { type: mimeType });
+  } catch (error) {
+    console.error(error);
+  }
+};
