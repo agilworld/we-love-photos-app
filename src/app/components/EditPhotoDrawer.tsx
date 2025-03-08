@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import type { ComponentPropsWithRef } from "react";
+"use client";
+
+import { useState } from "react";
 import NextImage, { ImageLoaderProps } from "next/image";
-import SampleImage from "@/app/images/welovephoto-image.jpg";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,

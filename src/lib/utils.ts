@@ -2,7 +2,6 @@ import { PhotoResult } from "@/_types/photos";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import changelogs from "@/data/changelogs.json";
-import { url } from "inspector";
 
 export function getLastVersion() {
   const logs = changelogs.logs;

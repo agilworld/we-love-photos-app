@@ -16,7 +16,6 @@ import { track } from "@vercel/analytics";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter } from "next/navigation";
 
 type PhotoGridItemProps = {
   item: Partial<PhotoResult>;
@@ -58,7 +57,7 @@ export const PhotoDetailDrawer = ({
 }: PhotoDrawerProps) => {
   const [open, setOpen] = useState<boolean>(true);
   const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -76,7 +75,6 @@ export const PhotoDetailDrawer = ({
   const downloadPhoto = () => {
     if (item.src?.full) {
       const url = item.src?.full as string;
-      item.src.large2x;
       fetch(url)
         .then((response) => {
           if (!response.ok) {

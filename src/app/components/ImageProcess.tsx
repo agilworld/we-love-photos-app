@@ -1,11 +1,11 @@
+"use client";
+
 import { useCallback, useState } from "react";
 import { initializeModel, getModelInfo, processImage } from "@/lib/aiProcess";
 import Image from "next/image";
 import LoaderModel from "@/components/LoaderModel";
-import { urlToFile } from "@/lib/utils";
 import { PencilIcon } from "lucide-react";
 import EditPhotoDrawer from "./EditPhotoDrawer";
-import { Button } from "@/components/ui/button";
 import { ImageFile } from "@/_types/removal";
 import clsx from "clsx";
 import ButtonDropdown from "@/components/ButtonDropdown";
@@ -22,8 +22,14 @@ export default function ImageProcess(props: ImageProps) {
 
   const [isModelLoading, setIsModelLoading] = useState<boolean>(false);
   const [isProcessLoading, setIsProcessLoading] = useState<boolean>(false);
-  const [isWebGPU, setIsWebGPU] = useState<boolean>(false);
-  const [isIOS, setIsIOS] = useState<boolean>(false);
+  const [, setIsWebGPU] =
+    useState<boolean>(
+      false,
+    ); /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  const [, setIsIOS] =
+    useState<boolean>(
+      false,
+    ); /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const [processedAi, setProcessedAi] = useState<string>("");
   const [processedEditAi, setProcessedEditAi] = useState<string>("");
   const [bgcolor, setBgcolor] = useState<string>("");
