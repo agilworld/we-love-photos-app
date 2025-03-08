@@ -43,6 +43,6 @@ export default withSentryConfig(withNextIntl(nextConfig), {
 
   // An auth token is required for uploading source maps.
   authToken: process.env.NEXT_PUBLIC_SENTRY_AUTH_TOKEN,
-
+  telemetry: false,
   silent: false, // Can be used to suppress logs
 });
