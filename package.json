@@ -25,7 +25,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "serve": "npx serve out"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.3.3",
