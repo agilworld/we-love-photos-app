@@ -1,11 +1,11 @@
 "use client";
 
-import Footer from "./../components/Footer";
-import Header from "./../components/Header";
+import Footer from "../../components/shared/Footer";
+import Header from "../../components/shared/Header";
 import dynamic from "next/dynamic";
 
 const PhotoRemovalClientComponent = dynamic(
-  () => import("../components/PhotoRemoval"),
+  () => import("../../features/photoRemoval/PhotoRemoval"),
   { ssr: false }, // Disable server-side rendering
 );
 

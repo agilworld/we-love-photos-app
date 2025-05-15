@@ -3,23 +3,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { EColorProps, EOrientationProps, photosKeys } from "@/_types/photos";
 import { useEffect, useState, memo, useMemo, useRef, useCallback } from "react";
-import { searchQueryPhotos } from "@/apis";
+import { searchQueryPhotos } from "@/libs/api";
 import { SearchPhotosParams } from "@/_types/photos";
-import useDebounce from "@/lib/useDebounce";
-import PhotoGridLoader from "@/components/PhotoGridLoader";
+import useDebounce from "@/libs/hooks/useDebounce";
+import PhotoGridLoader from "@/features/search/component/PhotoGridLoader";
 import { PhotoResult } from "@/_types/photos";
 import PhotoGridItem, { PhotoDetailDrawer } from "./PhotoGridItem";
-import { usePhotoStore, useSearchOptionStore } from "@/states";
+import { usePhotoStore, useSearchOptionStore } from "./store/searchState";
 import { useShallow } from "zustand/shallow";
 import { Badge } from "@/components/ui/badge";
 import { useFormatter } from "next-intl";
-import { chunk3dAdvanceByHeight, chunks2Arr } from "@/lib/utils";
+import { chunk3dAdvanceByHeight, chunks2Arr } from "@/libs/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import MoveTopButton from "@/components/MoveTop";
-import { isScreen } from "@/lib/media";
+import MoveTopButton from "@/components/shared/MoveTop";
+import { isScreen } from "@/libs/media";
 import { track } from "@vercel/analytics";
-import { PhotoRepositoryList } from "@/lib/photoRepository";
+import { PhotoRepositoryList } from "@/libs/repository/photoRepository";
 
 type PhotoGridProps = {
   keyword: string;

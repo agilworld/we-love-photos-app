@@ -7,10 +7,10 @@ import PhotoGrid from "./PhotoGrid";
 import { Search, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EOrientationProps, EColorProps } from "@/_types/photos";
-import { useSearchOptionStore } from "@/states";
+import { useSearchOptionStore } from "./store/searchState";
 import { useShallow } from "zustand/shallow";
 import Select from "@/components/ui/select";
-import DefaultPhotoPlaceholder from "@/components/DefaultPhotoPlaceholder";
+import DefaultPhotoPlaceholder from "@/components/shared/DefaultPhotoPlaceholder";
 
 export default function SearchBar() {
   const [search, setSearch] = useState<string>("");
