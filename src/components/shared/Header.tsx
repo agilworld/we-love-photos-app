@@ -7,10 +7,10 @@ import {
   DrawerFooter,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import changelogs from "@/data/changelogs.json";
+import changelogs from "@/sample-data/changelogs.json";
 import { Button } from "@/components/ui/button";
 import { ComponentPropsWithRef, useState } from "react";
-import { getLastVersion } from "@/lib/utils";
+import { getLastVersion } from "@/libs/utils";
 import { Heart } from "lucide-react";
 import { H4 } from "@/components/ui/heading";
 import Link from "next/link";

@@ -7,7 +7,7 @@ import {
   UnsplashSearchPhotosProps,
   PhotoResult,
 } from "@/_types/photos";
-import { chunk3dAdvanceByHeight, chunks2Arr, uniqueBy } from "./utils";
+import { chunk3dAdvanceByHeight, chunks2Arr, uniqueBy } from "../utils";
 
 interface IPhotoRepository {
   url: string;

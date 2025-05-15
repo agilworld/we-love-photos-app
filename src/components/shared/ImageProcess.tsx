@@ -1,14 +1,18 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { initializeModel, getModelInfo, processImage } from "@/lib/aiProcess";
+import {
+  initializeModel,
+  getModelInfo,
+  processImage,
+} from "@/libs/ai/transformers";
 import Image from "next/image";
-import LoaderModel from "@/components/LoaderModel";
+import LoaderModel from "@/features/photoRemoval/component/LoaderModel";
 import { PencilIcon } from "lucide-react";
-import EditPhotoDrawer from "./EditPhotoDrawer";
+import EditPhotoDrawer from "../../features/photoRemoval/EditPhotoDrawer";
 import { ImageFile } from "@/_types/removal";
 import clsx from "clsx";
-import ButtonDropdown from "@/components/ButtonDropdown";
+import ButtonDropdown from "@/components/shared/ButtonDropdown";
 import { track } from "@vercel/analytics";
 
 type ImageProps = {

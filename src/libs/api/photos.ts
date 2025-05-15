@@ -1,11 +1,11 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
-import { ApiHeader, PexelApiHeader } from "@/lib/apiHeader";
+import { ApiHeader, PexelApiHeader } from "@/libs/api/apiHeader";
 import {
   PexelSearchPhotosProps,
   photosKeys,
   UnsplashSearchPhotosProps,
 } from "@/_types/photos";
-import { PhotoRepositoryList } from "@/lib/photoRepository";
+import { PhotoRepositoryList } from "@/libs/repository/photoRepository";
 export type QueryPhotosProps = QueryFunctionContext<
   ReturnType<(typeof photosKeys)["search"]>
 >;
