@@ -8,16 +8,17 @@ import {
 } from "@/libs/ai/transformers";
 import Image from "next/image";
 import LoaderModel from "@/features/photoRemoval/component/LoaderModel";
-import { PencilIcon } from "lucide-react";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import EditPhotoDrawer from "../../features/photoRemoval/EditPhotoDrawer";
 import { ImageFile } from "@/_types/removal";
 import clsx from "clsx";
 import ButtonDropdown from "@/components/shared/ButtonDropdown";
 import { track } from "@vercel/analytics";
+import { Button } from "../ui/button";
 
 type ImageProps = {
   imageFile: ImageFile;
-  imageSrc: string;
+  imageSrc?: string;
 };
 
 export default function ImageProcess(props: ImageProps) {
@@ -40,6 +41,8 @@ export default function ImageProcess(props: ImageProps) {
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState<boolean>(false);
 
   const handleClickProcess = useCallback(() => {
+    if (!imageSrc) return;
+
     track("Start to Process Remove BG", {
       url: imageSrc,
     });
@@ -60,12 +63,13 @@ export default function ImageProcess(props: ImageProps) {
         console.log(error);
       }
     })();
-  }, []);
+  }, [imageSrc, imageFile]);
 
-  const processAiImage = useCallback(async () => {
+  const processAiImage = async () => {
     // process
     try {
       const imageai = imageFile.src;
+      console.log("image ai", imageai);
       if (imageai) {
         const resImage = await processImage(imageai);
         const imageblob = URL.createObjectURL(resImage);
@@ -75,7 +79,7 @@ export default function ImageProcess(props: ImageProps) {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  };
 
   const onShowEditDrawer = () => {
     setIsEditDrawerOpen(true);
@@ -84,6 +88,12 @@ export default function ImageProcess(props: ImageProps) {
   const handleEditSave = (file: string, color: string) => {
     setProcessedEditAi(file);
     setBgcolor(color);
+  };
+
+  const handleClear = () => {
+    setProcessedAi("");
+    setProcessedEditAi("");
+    setBgcolor("");
   };
 
   const transparentBg = `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAGUExURb+/v////5nD/3QAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAUSURBVBjTYwABQSCglEENMxgYGAAynwRB8BEAgQAAAABJRU5ErkJggg==")`;
@@ -97,20 +107,30 @@ export default function ImageProcess(props: ImageProps) {
           backgroundRepeat: processedAi ? "repeat" : undefined,
         }}
         className={clsx([
-          "flex flex-col relative justify-center items-center cursor-pointer rounded-lg",
+          "flex flex-col h-full relative justify-center items-center cursor-pointer rounded-lg",
           {
             "border-4 border-slate-200 border-dashed": !processedAi,
           },
         ])}
       >
         {(processedEditAi || processedAi) && (
-          <div
-            onClick={onShowEditDrawer}
-            className="absolute flex w-8 h-8 
+          <>
+            <div
+              onClick={onShowEditDrawer}
+              className="absolute flex w-8 h-8 
             bg-black right-2.5 shadow-lg top-2.5 rounded-full"
-          >
-            <PencilIcon className="text-white w-4 h-4 mx-auto my-auto" />
-          </div>
+            >
+              <PencilIcon className="text-white w-4 h-4 mx-auto my-auto" />
+            </div>
+
+            <div
+              onClick={handleClear}
+              className="absolute flex w-8 h-8 
+            bg-white right-2.5 shadow-lg top-12 rounded-full"
+            >
+              <Trash2Icon className="text-black w-4 h-4 mx-auto my-auto" />
+            </div>
+          </>
         )}
 
         {isEditDrawerOpen && imgDimension && processedAi && (
@@ -132,6 +152,8 @@ export default function ImageProcess(props: ImageProps) {
             width={imgDimension.width as number}
             height={imgDimension.height as number}
             className="rounded-lg"
+            objectFit={"contain"}
+            style={{ maxHeight: imgDimension.height }}
             src={processedEditAi || processedAi}
           />
         ) : isModelLoading || isProcessLoading ? (
@@ -150,41 +172,45 @@ export default function ImageProcess(props: ImageProps) {
         ) : (
           <button
             onClick={handleClickProcess}
+            disabled={!imageSrc}
             className="absolute px-4 py-2 z2 text-white bg-black shadow-lg rounded-md"
           >
             Start to Process
           </button>
         )}
       </div>
-      <div className="flex items-center justify-between mt-8 p-4 bg-slate-100 border-solid border border-slate-400 rounded-lg">
-        <p>Please download here:</p>
-        <ButtonDropdown
-          buttonText="Download"
-          buttonDisabled={processedAi || processedEditAi ? false : true}
-          items={[
-            {
-              buttonText: "Transparent Image",
-              key: "origin",
-              link: processedAi,
-              disabled: false,
-              download: "welovephotos-origin.png",
-              handleClick: () => {
-                track("Download Transparent Image");
+
+      {(processedAi || processedEditAi) && (
+        <div className="flex items-center justify-between mt-8 p-4 bg-slate-100 border-solid border border-slate-400 rounded-lg">
+          <p>Please download here:</p>
+          <ButtonDropdown
+            buttonText="Download"
+            buttonDisabled={processedAi || processedEditAi ? false : true}
+            items={[
+              {
+                buttonText: "Transparent Image",
+                key: "origin",
+                link: processedAi,
+                disabled: false,
+                download: "welovephotos-origin.png",
+                handleClick: () => {
+                  track("Download Transparent Image");
+                },
               },
-            },
-            {
-              buttonText: "Edited Image",
-              key: "edited",
-              disabled: processedEditAi ? false : true,
-              link: processedEditAi,
-              download: "welovephotos-colored-bg.png",
-              handleClick: () => {
-                track("Download Edited Image");
+              {
+                buttonText: "Edited Image",
+                key: "edited",
+                disabled: processedEditAi ? false : true,
+                link: processedEditAi,
+                download: "welovephotos-colored-bg.png",
+                handleClick: () => {
+                  track("Download Edited Image");
+                },
               },
-            },
-          ]}
-        />
-      </div>
+            ]}
+          />
+        </div>
+      )}
     </div>
   );
 }

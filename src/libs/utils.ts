@@ -103,3 +103,21 @@ export const urlToFile = async (
     console.error(error);
   }
 };
+
+export const getResizeResolutionImage = (
+  image: { width: number; height: number },
+  maxHeight = 400,
+) => {
+  const originalWidth = image.width;
+  const originalHeight = image.height;
+
+  if (originalHeight <= maxHeight) {
+    return { width: originalWidth, height: originalHeight };
+  }
+
+  const scale = maxHeight / originalHeight;
+  const newWidth = Math.round(originalWidth * scale);
+  const newHeight = Math.round(originalHeight * scale);
+
+  return { width: newWidth, height: newHeight };
+};

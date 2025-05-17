@@ -38,7 +38,7 @@ export default async function RootLayout({
       >
         <Providers locale={locale} messages={messages}>
           {children}
-          <Analytics mode={"production"} />
+          {/* <Analytics mode={"development"} /> */}
         </Providers>
       </body>
     </html>
