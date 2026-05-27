@@ -34,7 +34,7 @@ export default function Header(props: HeaderProps) {
             <H4 className="mb-0 text-lg">We Love Photos</H4>
           </Link>
         )}
-        <a className="text-sm" href="https://dianafrial.net" target="_blank">
+        <a className="text-sm" href="https://dianragil.com" target="_blank">
           <Badge variant={"outline"}>Hire me!</Badge>
         </a>
       </div>

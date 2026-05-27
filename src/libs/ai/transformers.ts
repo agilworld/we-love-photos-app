@@ -115,14 +115,8 @@ export async function initializeModel(forceModelId?: string): Promise<boolean> {
           model_type: "custom",
           is_encoder_decoder: false,
           max_position_embeddings: 1024,
-          "transformers.js_config": {
-            kv_cache_dtype: undefined,
-            free_dimension_overrides: undefined,
-            device: undefined,
-            dtype: undefined,
-            use_external_data_format: undefined,
-          },
-          normalized_config: undefined,
+          "transformers.js_config": {},
+          normalized_config: {},
         },
       });
 
