@@ -42,7 +42,7 @@
     "clsx": "^2.1.1",
     "file-saver": "^2.0.5",
     "lucide-react": "^0.462.0",
-    "next": "^15.1.6",
+    "next": "^15.5.18",
     "next-intl": "^3.26.1",
     "onnxruntime-web": "^1.20.1",
     "react": "^19.0.0",
