@@ -7,7 +7,7 @@ import {
   DrawerFooter,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import changelogs from "@/sample-data/changelogs.json";
+import changelogs from "@/data/changelogs.json";
 import { Button } from "@/components/ui/button";
 import { ComponentPropsWithRef, useState } from "react";
 import { getLastVersion } from "@/libs/utils";

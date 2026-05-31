@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {
-  org: "qaki5-team",
+  org: "agilworld",
   project: "we-love-photos",
 
   // An auth token is required for uploading source maps.

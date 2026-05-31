@@ -1,3 +1,5 @@
+import HeadersInit = HeadersInit;
+
 export const ApiHeader = (): HeadersInit => {
   const headers = new Headers();
   headers.set(

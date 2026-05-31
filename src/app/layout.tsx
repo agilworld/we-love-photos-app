@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import localFont from "next/font/local";
 import { getLocale, getMessages } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
