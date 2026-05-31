@@ -2,7 +2,6 @@
 
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, useCallback, useState, useRef } from "react";
-
 import PhotoGrid from "./PhotoGrid";
 import { Search, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
