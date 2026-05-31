@@ -27,7 +27,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "serve": "npx serve out"
+    "serve": "npx serve out",
+    "prepare": "husky"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
@@ -53,21 +54,20 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.5",
-    "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4.3.0",
     "@tanstack/react-query-devtools": "^5.100.14",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
-    "eslint": "^10.4.0",
-    "eslint-config-next": "^16.2.6",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.13",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "7.37.2",
+    "husky": "^9.1.7",
     "prettier": "^3.8.3",
     "prettier-eslint": "^16.4.2",
     "tailwindcss": "^4.3.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.60.0"
+    "typescript": "^5.9.3"
   }
 }
