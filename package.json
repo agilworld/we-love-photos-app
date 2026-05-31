@@ -2,7 +2,7 @@
   "name": "welove-photos",
   "title": "We Love Photos",
   "description": "Dedication for who those love and search photos for collection or commercial project",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "author": {
     "email": "agil.rahadi@gmail.com",
     "name": "Dian Afrial Rahadi Ragil"
@@ -21,7 +21,7 @@
   ],
   "license": "MIT",
   "private": true,
-  "packageManager": "pnpm@11.4.0",
+  "packageManager": "pnpm@11.5.0",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
