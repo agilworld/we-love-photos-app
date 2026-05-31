@@ -2,13 +2,12 @@
 
 # dependencies
 /node_modules
-/apps/server/node_modules/
-/apps/web/node_modules/
+/apps/*/node_modules/
 /apps/*/dist
-/apps/**/out
-/apps/**/.next
-/apps/**/.turbo
-/apps/**/build
+/apps/*/out
+/apps/*/.next
+/apps/*/.turbo
+/apps/*/build
 /.pnp
 .pnp.*
 .yarn/*
