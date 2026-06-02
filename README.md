@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.5.0-brightgreen.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D20.0.0-green.svg)
-![pnpm](https://img.shields.io/badge/pnpm-9.15.0-red.svg)
+![pnpm](https://img.shields.io/badge/pnpm-11.15.0-red.svg)
 
 > A photo search and AI background removal platform built with Next.js, Zustand, Transformers.js and ONNX runtime web model.
 

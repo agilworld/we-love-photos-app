@@ -186,7 +186,7 @@ export const PhotoDetailDrawer = ({
               </DrawerHeader>
               <DrawerFooter className="mt-2 md:mt-10 pt-2">
                 <a
-                  href={`/removebg?src=${item.src?.large}&w=${item.width}&h=${item.height}`}
+                  href={`/remove-background?src=${item.src?.large}&w=${item.width}&h=${item.height}`}
                   target="_blank"
                   className="bg-blue-900 text-white text-center shadow-lg hover:bg-blue-800 py-2 px-4 rounded-md"
                   onClick={editPhoto}
